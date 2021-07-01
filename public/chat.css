@@ -1,0 +1,97 @@
+.detail {
+  display: flex;
+}
+.chat-content {
+  height: 450px;
+  overflow-y: scroll;
+  padding: 10px;
+}
+.chat-list-container {
+  border-right: 1px solid rgba(0, 0, 0, 0.125);
+  margin-right: 10px;
+}
+.list-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+.list-container p {
+  margin: 0 10px 0 0;
+  font-size: 12px;
+}
+.list-container2 {
+  display: flex;
+  align-items: flex-end;
+}
+.list-container2 p {
+  margin: 0 0 0 10px;
+  font-size: 12px;
+}
+.list-container li {
+  margin-top: 10px;
+  list-style: none;
+}
+.list-container2 li {
+  margin-top: 10px;
+  list-style: none;
+}
+.text-small {
+  font-size: 12px;
+  color: gray;
+  margin-bottom: 0;
+}
+.chat-box {
+  background: #eee;
+  padding: 10px;
+  border-radius: 5px;
+  float: left;
+  border-radius: 50px;
+}
+.mine {
+  float: right;
+  background-color: rgb(221, 125, 0);
+  color: white;
+}
+.list-group-item {
+  border: none;
+  border-bottom: solid 1px rgba(0, 0, 0, 0.125);
+}
+.list-group-item h6 {
+  z-index: 1;
+}
+.helper {
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.time {
+  display: inline-block;
+}
+#send {
+  background: rgb(179, 179, 179);
+  color: white;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+#chat-input {
+  border: none;
+  position: absolute;
+  top: 5px;
+  width: 95%;
+  margin-left: 2.5%;
+}
+#chat-input::placeholder {
+  color: #aaaaaa;
+}
+.input-group input:focus {
+  outline: none;
+}
+.input-group {
+  height: 100px;
+  border-radius: 10px;
+  border: solid 1px #969696;
+}

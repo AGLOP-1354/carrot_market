@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" 
+  rel="stylesheet" 
+  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
+  crossorigin="anonymous">
+  <link rel="stylesheet" 
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css" 
+  integrity="sha256-PF6MatZtiJ8/c9O9HQ8uSUXr++R9KBYu4gbNG5511WE=" 
+  crossorigin="anonymous" />
+  <link rel="stylesheet" href="./main.css">
+</head>
+
+
+
+<style>
+
+.icon{
+  animation: rotate_image 5s linear infinite;
+  transform-origin: 50% 50%;
+}    
+
+@keyframes rotate_image{
+	100% {
+    	transform: rotate(360deg);
+    }
+  }
+
+  .develope{
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+
+  h1{
+    font-weight: 600;
+  }
+</style>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav_contain">
+      <a href="/index.html">
+        <div id="home">
+          <i class="fas fa-home"></i>
+          <span>홈</span>
+        </div>
+      </a>
+      <a href="/town.html">
+        <div id="town">
+          <i class="far fa-building"></i>
+          <span>동네생활</span>
+        </div>
+      </a>
+      <a href="/near.html">
+        <div id="near">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>내 근처</span>
+        </div>
+      </a>
+      <a href="/chat.html">
+        <div id="chat">
+          <i class="far fa-comments"></i>
+          <span>채팅</span>
+        </div>
+      </a>
+      <a href="/my_carrot.html">
+        <div id="my_carrot">
+          <i class="far fa-user"></i>
+          <span>나의 당근</span>
+        </div>
+      </a>
+    </div>
+  </nav>
+
+  
+<!-- upload button-hidden -->
+<div class="black_ground"></div>
+
+<div class="upload_container">
+  
+  <div class="upload_toggle">
+    <a href="./town.html">
+      <div class="write_upload mb-3">
+        <div class="upload_ct">
+          <span>글쓰기</span>
+        </div>
+        <div class="orange-box">
+          <i class="fas fa-file-word fa-lg"></i>
+        </div>
+      </div>
+    </a>
+    <a href="./upload.html">
+      <div class="item_upload mb-3">
+        <div class="upload_ct">
+          <span>중고거래</span>
+        </div>
+        <div class="orange-box">
+          <i class="fas fa-pen fa-lg"></i>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div class="upload">
+
+    <i class="fas fa-plus fa-lg upload_icon"></i>
+
+  </div>
+
+</div>
+
+  <div class="container develope">
+    <div class="load">
+      <i class="fas fa-spinner fa-8x icon mb-5"></i>
+      <h1>This page is <br> under  development 😅</h1>
+    </div>
+  </div>
+
+
+
+
+  <script src="./jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
+  crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
+  
+  <script>
+
+    var angle = 0;
+    let state = true;
+  
+    $('.upload').click(()=>{
+      angle += 225;
+      state = !state;
+      $('.upload_toggle').fadeToggle(200);
+      $('.black_ground').fadeToggle(200);
+      $('.upload_icon').css({'transform':`rotate(${angle}deg)`});
+      if(state == true){
+        $('.upload').css({'background':'rgb(221, 125, 0)','color':'white'});
+      }else{
+        $('.upload').css({'background':'white','color':'rgb(221, 125, 0)'});
+      }
+    });
+  
+    $('.item_upload').click(()=>{
+      if(localStorage.getItem('user') != null){
+        window.location.href='/upload.html';
+      }else{
+        window.location.href='/login.html'
+      }
+    });
+  
+    $('.write_upload').click(()=>{
+      if(localStorage.getItem('user') != null){
+        window.location.href='/upload.html';
+      }else{
+        window.location.href='/login.html'
+      }
+    });
+  
+    $('#my_carrot').click(()=>{
+      if(localStorage.getItem('user') != null){
+        window.location.href='/upload.html';
+      }else{
+        window.location.href='/login.html'
+      }
+    })
+  
+    $('.black_ground').click(()=>{
+      $('.upload_toggle').fadeOut(200);
+      $('.black_ground').fadeOut(200);
+  
+    });
+  
+    $(window).scroll(()=>{
+      $('.upload_toggle').fadeOut(200);
+      $('.black_ground').fadeOut(200);
+    })
+  
+  </script>
+
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyA3bZMDAG-3yzmGWf-8zhQYKF2ZHkEnw6E",
+      authDomain: "carrot-market-f6dde.firebaseapp.com",
+      projectId: "carrot-market-f6dde",
+      storageBucket: "carrot-market-f6dde.appspot.com",
+      messagingSenderId: "809984227192",
+      appId: "1:809984227192:web:7c9061d3eceecfab653a8d"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
+
+
+
+
+
+
+
+
+</body>
+</html>
