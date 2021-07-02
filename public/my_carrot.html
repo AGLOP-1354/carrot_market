@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" 
+  rel="stylesheet" 
+  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
+  crossorigin="anonymous">
+  <link rel="stylesheet" 
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css" 
+  integrity="sha256-PF6MatZtiJ8/c9O9HQ8uSUXr++R9KBYu4gbNG5511WE=" 
+  crossorigin="anonymous" />
+  <link rel="stylesheet" href="./style/main.css">
+  <link rel="stylesheet" href="./style/my_carrot.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav_contain">
+      <a href="/index.html">
+        <div id="home">
+          <i class="fas fa-home"></i>
+          <span>홈</span>
+        </div>
+      </a>
+      <a href="/town.html">
+        <div id="town">
+          <i class="far fa-building"></i>
+          <span>동네생활</span>
+        </div>
+      </a>
+      <a href="/near.html">
+        <div id="near">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>내 근처</span>
+        </div>
+      </a>
+      <a href="/chat.html">
+        <div id="chat">
+          <i class="far fa-comments"></i>
+          <span>채팅</span>
+        </div>
+      </a>
+      <a href="/my_carrot.html">
+        <div id="my_carrot">
+          <i class="far fa-user"></i>
+          <span id="userName">나의 당근</span>
+        </div>
+      </a>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <div id="Header">
+
+      <h4>나의 당근</h4>
+      <i class="fas fa-cog fa-2x" id="icons"></i>
+
+    </div>
+
+    <div class="Profile">
+
+      <i class="fas fa-user-circle fa-4x" id="icons"></i>
+      <p id="UserName"></p>
+
+    </div>
+
+    <div class="btn_container">
+      <button type="submit" class="btn btn-danger" id="logout">로그아웃</button>
+    </div>
+
+
+    <div class="Icon_contaienr">
+
+      <div class="a">
+        <div class="Icons">
+          <i class="fas fa-sticky-note fa-2x"></i>
+        </div>
+        <p>판매내역</p>
+      </div>
+
+      <div class="a">
+        <div class="Icons">
+          <i class="fas fa-shopping-bag fa-2x"></i>
+        </div>
+        <p>구매내역</p>
+      </div>
+
+      <div class="a">
+        <div class="Icons">
+          <i class="fas fa-heart fa-2x"></i>
+        </div>
+        <p>관심목록</p>
+      </div>
+
+    </div>
+
+  </div>
+  <div class="boundary"></div>
+
+  <div class="container">
+    <h4 style="padding-top: 15px;">나의 리스트</h4>
+    <div class="my_list"></div>
+
+  </div>
+
+
+
+
+
+  <script src="./jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
+  crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyA3bZMDAG-3yzmGWf-8zhQYKF2ZHkEnw6E",
+      authDomain: "carrot-market-f6dde.firebaseapp.com",
+      projectId: "carrot-market-f6dde",
+      storageBucket: "carrot-market-f6dde.appspot.com",
+      messagingSenderId: "809984227192",
+      appId: "1:809984227192:web:7c9061d3eceecfab653a8d"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
+
+<script>
+
+  const db = firebase.firestore();
+  var myuid = JSON.parse(localStorage.getItem('user')).uid;
+
+  //유저 정보확인
+  var lStorage = localStorage.getItem('user');
+
+  firebase.auth().onAuthStateChanged((user)=>{
+    if(user){
+      localStorage.setItem('user', JSON.stringify(user))
+    }
+  });
+
+  $('#UserName').html(JSON.parse(localStorage.getItem('user')).displayName)
+  
+
+  $('#logout').click(()=>{
+    firebase.auth().signOut();
+    localStorage.removeItem('user');
+    window.location.href = '/';
+  })
+
+  db.collection('product').get().then((결과)=>{
+    결과.forEach((doc)=>{
+      if(myuid == doc.data().uid){
+        var item = 
+        `<div class="product">
+          <div class="thumbnail" style="background-image: url('${doc.data().이미지}')"></div>
+          <div class="flex-grow-1 p-4">
+            <h5 class="title"><a href="/detail.html?id=${doc.id}">${doc.data().제목}</a></h5>
+            <p class="date">${doc.data().날짜}</p>
+            <p class="price">${doc.data().가격}원</p>
+            <p class="price">${doc.data().내용}</p>
+            <p class="float-end">🤍0</p>
+          </div>
+        </div>
+        <hr />`;
+        $('.my_list').append(item);
+
+      }
+    })
+  })
+
+
+  //edit
+  $('#edit').click(()=>{
+    window.location.href = `./edit.html?id=${myuid}`
+  })
+</script>
+</body>
+</html>
