@@ -140,7 +140,8 @@ a {
 }
 
 .login {
-  width: 500px;
+  max-width: 500px;
+  width: 80%;
   height: 280px;
   margin: auto;
   display: flex;
@@ -155,7 +156,8 @@ a {
 }
 
 .Sign {
-  width: 500px;
+  max-width: 500px;
+  width: 80%;
   height: 280px;
   margin: auto;
   display: flex;
@@ -178,4 +180,14 @@ a {
   height: 100vh;
   display: none;
   z-index: 11;
+}
+
+#delete{
+  display: none;
+}
+#edit{
+  display: none;
+}
+#chat_btn{
+  display: none;
 }

@@ -102,6 +102,8 @@
 
 <script>
 
+  alert('채팅방을 선택후 이용해 주세요');
+
   const db = firebase.firestore();
   var myuid = JSON.parse(localStorage.getItem('user')).uid;
 
@@ -113,8 +115,9 @@
       date : new Date(),
       uid : myuid
     }
+    if($('#chat-input').val()!=""){
     db.collection('chatroom').doc(채팅방id).collection('messages').add(messageData);
-
+    }
   })
   $('#chat-input').on("propertychange change keyup paste input", ()=>{
     if($('#chat-input').val() != ""){

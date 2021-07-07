@@ -64,6 +64,7 @@
     </div>
     <button id="edit">수정</button>
     <button id="chat_btn">채팅</button>
+    <button id="delete">삭제</button>
   </div>
 
 
@@ -98,6 +99,11 @@
   var queryString = new URLSearchParams(window.location.search);
   var myuid = JSON.parse(localStorage.getItem('user')).uid;
 
+  $('#delete').click(()=>{
+    db.collection('product').doc(queryString.get('id')).delete().then(()=>{
+      window.location.href = '/'
+    })
+  })
 
 
   $('#chat_btn').click(()=>{
@@ -120,9 +126,10 @@
     itemName = result.data().제목;
     
     if(sellerUid != myuid){
-      $('#edit').css('display','none');
+      $('#chat_btn').css('display','block');
     }else{
-      $('#chat_btn').css('display','none')
+      $('#edit').css('display','block');
+      $('#delete').css('display','block');
     }
 
     $('.author').html(result.data().이름);
