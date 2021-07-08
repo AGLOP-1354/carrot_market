@@ -3,6 +3,22 @@
   padding: 0;
   margin: 0;
 }
+.first-page{
+  position: fixed;
+  top: 0;
+  background: white;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.first-page img{
+  width: 200px;
+  height: 50px;
+}
 
 body {
   overflow-x: hidden;
@@ -13,7 +29,13 @@ a {
   color: black;
   text-decoration: none;
 }
-
+::-webkit-scrollbar{
+  display: none;
+}
+.main_content{
+  scrollbar-width: none;
+  overflow-y: scroll;
+}
 .product {
   max-width: 1440px;
   display: flex;

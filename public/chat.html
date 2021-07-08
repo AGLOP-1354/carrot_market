@@ -18,60 +18,37 @@
 </head>
 <body>
 
-  <nav class="navbar">
-    <div class="container nav_contain">
-      <a href="/index.html">
-        <div id="home">
-          <i class="fas fa-home"></i>
-          <span>홈</span>
-        </div>
-      </a>
-      <a href="/town.html">
-        <div id="town">
-          <i class="far fa-building"></i>
-          <span>동네생활</span>
-        </div>
-      </a>
-      <a href="/near.html">
-        <div id="near">
-          <i class="fas fa-map-marker-alt"></i>
-          <span>내 근처</span>
-        </div>
-      </a>
-      <a href="/chat.html">
-        <div id="chat">
-          <i class="far fa-comments"></i>
-          <span>채팅</span>
-        </div>
-      </a>
-      <a href="/my_carrot.html">
-        <div id="my_carrot">
-          <i class="far fa-user"></i>
-          <span>나의 당근</span>
-        </div>
-      </a>
+  <nav class="container icons">
+
+    <i class="fas fa-arrow-left back fa-lg"></i>
+    <div class="menu_contain">
+      <i class="fas fa-ellipsis-v fa-lg menu-dis mb-2"></i>
+      <div class="menu">
+
+        <ul>
+          <li id="chat_exit">채팅방 나가기</li>
+        </ul>
+
+      </div>
     </div>
   </nav>
 
 
-
-  <div class="container title" style="text-align: center;font-size: 36px;"></div>
-    <div class="container p-4 detail">
+    <div class="container detail">
         <div class="col-3 p-0 chat-list-container">
           <ul class="list-group chat-list">
           </ul>
         </div>
-        <div class="col-9 p-0">
+        <div class="col-9 p-0" style="position: relative;">
           <div class="chat-room">
             <ul class="list-group chat-content">
             </ul>
-            <div class="input-group" style="margin-bottom: 80px;">
+            <div class="input-group">
               <input id="chat-input" placeholder="메세지를 입력해주세요">
               <button class="btn btn-secondary" id="send">전송</button>
             </div>
           </div>
         </div>
-   </div> 
 
 
   <script src="./jquery-3.5.1.min.js"></script>
@@ -102,7 +79,6 @@
 
 <script>
 
-  alert('채팅방을 선택후 이용해 주세요');
 
   const db = firebase.firestore();
   var myuid = JSON.parse(localStorage.getItem('user')).uid;
@@ -117,6 +93,7 @@
     }
     if($('#chat-input').val()!=""){
     db.collection('chatroom').doc(채팅방id).collection('messages').add(messageData);
+    $('#chat-input').val('');
     }
   })
   $('#chat-input').on("propertychange change keyup paste input", ()=>{
@@ -127,7 +104,6 @@
     }
   })
     
-
 
   var 채팅방id;
   db.collection('chatroom').where('who', 'array-contains', myuid).get().then((result)=>{
@@ -142,6 +118,43 @@
 
       
     })
+    채팅방id = $('.helper').first().siblings('.text-small').text();
+    $(window).ready((e)=>{
+      db.collection('chatroom').doc(채팅방id).collection('messages').orderBy('date').onSnapshot((result)=>{
+          $('.chat-content').html('');
+          $('#chat-input').val('');
+          $('.helper').first().parents('.list-group-item').css('background','rgb(214, 214, 214)');
+          result.forEach((a)=>{
+            var time = a.data().date.toDate();
+            var hours = time.getHours();
+            var timeState;
+            if(time.getHours() >= 13 && time.getHours() <= 24){
+              timeState = '오후';
+              hours -= 12;
+            }else if(time.getHours() < 13 && time.getHours() >= 1){
+              timeState = '오전';
+            }
+            if(myuid == a.data().uid){
+            var template = `
+            <div class="list-container">
+              <p class="time">${timeState} ${hours}:${time.getMinutes()}</p>
+              <li><span class="chat-box mine">${a.data().content}</span></li>
+            `;
+            $('.chat-content').append(template);
+            }else{
+              var template = `
+              <div class="list-container2">
+                <li><span class="chat-box">${a.data().content}</span></li>
+                <p class="time">${timeState} ${hours}:${time.getMinutes()}</p>
+              </div>`;
+              $('.chat-content').append(template);
+          }
+          })
+        })
+    })
+
+
+      
       $('.helper').click((e)=>{
         채팅방id = $(e.target).siblings('.text-small').text();
         $('.list-group-item').css('background','white');
@@ -151,7 +164,6 @@
         e.stopImmediatePropagation();
         db.collection('chatroom').doc(채팅방id).collection('messages').orderBy('date').onSnapshot((result)=>{
           $('.chat-content').html('');
-          $('#chat-input').val('');
 
           result.forEach((a)=>{
             var time = a.data().date.toDate();
@@ -184,6 +196,20 @@
       })
   })
 
+  $('#chat_exit').click(()=>{
+    db.collection('chatroom').doc(채팅방id).delete().then(()=>{
+      window.location.reload();
+    })
+  });
+
+  $('.menu-dis').click(()=>{
+    $('.menu').slideToggle();
+  })
+
+
+  $('.back').click(()=>{
+    history.back();
+  })
 </script>
 </body>
 </html>
