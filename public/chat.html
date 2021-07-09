@@ -44,7 +44,7 @@
             <ul class="list-group chat-content">
             </ul>
             <div class="input-group">
-              <input id="chat-input" placeholder="메세지를 입력해주세요">
+              <input id="chat-input" onkeydown="EnterKey()" placeholder="메세지를 입력해주세요">
               <button class="btn btn-secondary" id="send">전송</button>
             </div>
           </div>
@@ -85,6 +85,12 @@
 
   $('.title').html(JSON.parse(localStorage.getItem('user')).displayName)
 
+  function EnterKey() {
+    if (window.event.keyCode == 13) {
+      $('#send').click();
+    } 
+  }
+  
   $('#send').click(()=>{
     var messageData = {
       content : $('#chat-input').val(),
@@ -103,19 +109,42 @@
       $('#send').css('background','rgb(179, 179, 179)');
     }
   })
+
+
+    var sellerName;
+    var selleruid;
     
+      
+
 
   var 채팅방id;
+
   db.collection('chatroom').where('who', 'array-contains', myuid).get().then((result)=>{
+
+    db.collection('user').get().then((result)=>{
+        result.forEach((a)=>{
+          console.log(a.data().uid)
+          if(a.data().uid == selleruid){
+            sellerName = a.data().name;
+            return (a == true)
+          }
+        })
+      })
+      
     result.forEach((room)=>{
+      if(room.data().who[0] == myuid){
+        selleruid = room.data().who[1];
+      }else{
+        selleruid = room.data().who[0];
+      }
       var roomBox = `
             <li class="list-group-item">
               <div class="helper"></div>
               <h6 class="chat-title">${room.data().product}</h6>
+              <h6 class="sellerName">${sellerName}</h6>
               <h6 class="text-small">${String(room.id)}</h6>
             </li>`
       $('.chat-list').append(roomBox);
-
       
     })
     채팅방id = $('.helper').first().siblings('.text-small').text();
@@ -154,7 +183,6 @@
     })
 
 
-      
       $('.helper').click((e)=>{
         채팅방id = $(e.target).siblings('.text-small').text();
         $('.list-group-item').css('background','white');

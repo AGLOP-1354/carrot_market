@@ -123,8 +123,8 @@
       $('#delete').css('display','inline-block');
     }
 
-    $('#chat_btn').click(()=>{
-      db.collection('chatroom').where('who', 'array-contains', myuid).get().then((result)=>{
+    $('#chat_btn').click( async ()=>{
+      await db.collection('chatroom').get().then((result)=>{
         result.forEach((a)=>{
           if(a.data().who[0] == sellerUid || a.data().who[1] == sellerUid){
             window.location.href = '/chat.html';

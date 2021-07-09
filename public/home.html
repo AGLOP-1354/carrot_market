@@ -240,12 +240,14 @@
       
       var user_info = {
         name : name,
-        email : id
+        email : id,
+        uid : result.user.uid
       }
-      db.collection('user').doc(result.user.uid).set(user_info);
-
       result.user.updateProfile({displayName : name})
-      window.location.reload();
+      db.collection('user').doc(result.user.uid).set(user_info).then(()=>{
+        window.location.reload();
+      });
+
     });
   });
 

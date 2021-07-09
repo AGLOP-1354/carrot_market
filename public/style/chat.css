@@ -8,6 +8,7 @@
   left: 50%;
   transform: translateX(-50%);
   background: white;
+  z-index: 111;
 }
 .menu{
   display: none;
@@ -40,7 +41,7 @@
 .detail {
   display: flex;
   padding : 0 24px 0 24px;
-  margin-top: 36px;
+  margin-top: 45px;
 }
 .chat-room{
   height: 100vh;
